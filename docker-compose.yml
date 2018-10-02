@@ -1,0 +1,42 @@
+version: "3"
+services:
+  'php':
+    restart: always
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    image: lnmp 
+    entrypoint: bash -c "/data/server/php/sbin/php-fpm && /root/go/bin/gotour -http '0.0.0.0:3999'"
+    ports:
+      - "9010:9010"
+      - "3999:3999"
+    depends_on:
+      - "mysql"
+    volumes:
+      - ./soft/laravel:/data/www/wwwroot
+    environment:
+      PATH: /data/server/php/bin:$PATH
+  'nginx':
+    restart: always
+    image: lnmp 
+    entrypoint: bash -c "/data/server/nginx/sbin/nginx && tail -f /etc/passwd"
+    depends_on:
+      - "php"
+    ports:
+      - "80:80"
+    volumes:
+      - ./soft/laravel:/data/www/wwwroot
+      - ./data/soft_etc/laravel/nginx/default.conf:/data/server/nginx/conf/vhost/default.conf
+  'mysql':
+    restart: always
+    image: mysql:8.0.12
+    volumes:
+        - ./data/soft_data/laravel/mysql:/var/lib/mysql 
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: example
+
+
