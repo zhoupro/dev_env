@@ -40,7 +40,7 @@ case "$1" in
     "down")
         docker-compose down
         ;;
-    "exec")
-        echo "exec"
+    "ex")
+        docker exec -it `docker-compose ps | grep "$2" | awk '{print $1}'` /bin/zsh
         ;;
 esac
