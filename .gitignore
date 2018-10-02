@@ -1,4 +1,5 @@
 soft/*
+!soft/.gitkeep
 data/soft_data/*
 docker-compose.yml
 
