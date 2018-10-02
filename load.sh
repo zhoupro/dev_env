@@ -43,4 +43,7 @@ case "$1" in
     "ex")
         docker exec -it `docker-compose ps | grep "$2" | awk '{print $1}'` /bin/zsh
         ;;
+    "echo")
+        cat docker-compose.yml | grep wwwroot | head -n 1 | awk -F ':' {'print $1'}
+        ;;
 esac
