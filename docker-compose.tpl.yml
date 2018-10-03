@@ -15,6 +15,7 @@ services:
       - "mysql"
     volumes:
       - {WEBROOT}:/data/www/wwwroot
+      - ./opt:/data/opt
     environment:
       PATH: /data/server/php/bin:$PATH
   'nginx':
