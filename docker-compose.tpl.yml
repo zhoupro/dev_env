@@ -40,3 +40,7 @@ services:
       MYSQL_DATABASE: example
 
 
+  'redis':
+    restart: always
+    image: lnmp
+    entrypoint: bash -c "/data/server/redis/bin/redis-server"
