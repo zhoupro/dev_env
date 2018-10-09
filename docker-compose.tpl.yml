@@ -44,4 +44,8 @@ services:
   'redis':
     restart: always
     image: lnmp
-    entrypoint: bash -c "/data/server/redis/bin/redis-server"
+    entrypoint: bash -c "tail -f /etc/passwd"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
