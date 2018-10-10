@@ -30,6 +30,7 @@ function config() {
 }
 
 echo "enjoy the joy day"
+shell=${3:-/bin/zsh}
 case "$1" in
     "config" )
         config "$2"
@@ -41,7 +42,7 @@ case "$1" in
         docker-compose down
         ;;
     "ex")
-        docker exec -it `docker-compose ps | grep "$2" | awk '{print $1}'` /bin/bash
+        docker exec -it `docker-compose ps | grep "$2" | awk '{print $1}'`  $shell 
         ;;
     "echo")
         cat docker-compose.yml | grep wwwroot | head -n 1 | awk -F ':' {'print $1'}
