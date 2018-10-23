@@ -11,10 +11,12 @@ services:
     ports:
       - "9010:9010"
       - "3999:3999"
+      - "9999:9999"
     depends_on:
       - "mysql"
     volumes:
       - {WEBROOT}:/data/www/wwwroot
+      - ./data/soft_etc/ssh:/root/.ssh
       - ./opt:/data/opt
     environment:
       PATH: /data/server/php/bin:$PATH

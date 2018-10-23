@@ -2,4 +2,5 @@ soft/*
 !soft/.gitkeep
 data/soft_data/*
 docker-compose.yml
-
+opt/*
+data/soft_etc/ssh/*
