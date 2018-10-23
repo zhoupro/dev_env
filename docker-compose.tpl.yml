@@ -7,7 +7,7 @@ services:
     security_opt:
       - seccomp:unconfined
     image: lnmp 
-    entrypoint: bash -c "/data/server/php/sbin/php-fpm && /root/go/bin/gotour -http '0.0.0.0:3999'"
+    entrypoint: bash -c "/data/server/php/sbin/php-fpm && tail -f /etc/passwd"
     ports:
       - "9010:9010"
       - "3999:3999"
