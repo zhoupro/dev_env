@@ -10,10 +10,14 @@ function config() {
     mkdir -p ./data/soft_data/$1
 
     [ -f ./docker-compose.yml ] && rm docker-compose.yml
-    #nginx conf
-    nginx_conf="./data/soft_etc/common/nginx/default.conf"
-    [ -f "./data/soft_etc/$1/nginx/default.conf" ] &&\
-        nginx_conf="./data/soft_etc/$1/nginx/default.conf"
+    #nginx server 
+    nginx_srv_conf="./data/soft_etc/common/nginx/vhost/server.conf"
+    [ -f "./data/soft_etc/$1/nginx/vhost/server.conf" ] &&\
+        nginx_srv_conf="./data/soft_etc/$1/nginx/vhost/server.conf"
+    #nginx main 
+    nginx_main_conf="./data/soft_etc/common/nginx/nginx.conf"
+    [ -f "./data/soft_etc/$1/nginx/nginx.conf" ] &&\
+        nginx_main_conf="./data/soft_etc/$1/nginx/nginx.conf"
 
     #webroot
     webroot="./soft/$1"
@@ -24,7 +28,8 @@ function config() {
     cp ./docker-compose.tpl.yml docker-compose.yml
     # replace etc
     sed -i "" "s#{WEBROOT}#$webroot#g" ./docker-compose.yml
-    sed -i "" "s#{NGINX_CONF}#$nginx_conf#g" ./docker-compose.yml
+    sed -i "" "s#{NGINX_SRV_CONF}#$nginx_srv_conf#g" ./docker-compose.yml
+    sed -i "" "s#{NGINX_MAIN_CONF}#$nginx_main_conf#g" ./docker-compose.yml
     sed -i "" "s#{MYSQL_DATA}#$mysql_data#g" ./docker-compose.yml
 
 }

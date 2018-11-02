@@ -16,6 +16,8 @@ services:
       - "mysql"
     volumes:
       - {WEBROOT}:/data/www/wwwroot
+      - {NGINX_SRV_CONF}:/data/server/nginx/conf/vhost/server.conf
+      - {NGINX_MAIN_CONF}:/data/server/nginx/conf/nginx.conf
       - ./data/soft_etc/ssh:/root/.ssh
       - ./opt:/data/opt
     environment:
@@ -30,7 +32,10 @@ services:
       - "80:80"
     volumes:
       - {WEBROOT}:/data/www/wwwroot
-      - {NGINX_CONF}:/data/server/nginx/conf/vhost/default.conf
+      - {NGINX_SRV_CONF}:/data/server/nginx/conf/vhost/server.conf
+      - {NGINX_MAIN_CONF}:/data/server/nginx/conf/nginx.conf
+      - ./data/soft_etc/ssh:/root/.ssh
+      - ./opt:/data/opt
   'mysql':
     restart: always
     image: mysql:8.0.12
@@ -51,3 +56,9 @@ services:
       - ALL
     security_opt:
       - seccomp:unconfined
+    volumes:
+      - {WEBROOT}:/data/www/wwwroot
+      - {NGINX_SRV_CONF}:/data/server/nginx/conf/vhost/server.conf
+      - {NGINX_MAIN_CONF}:/data/server/nginx/conf/nginx.conf
+      - ./data/soft_etc/ssh:/root/.ssh
+      - ./opt:/data/opt
