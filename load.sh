@@ -27,10 +27,10 @@ function config() {
 
     cp ./docker-compose.tpl.yml docker-compose.yml
     # replace etc
-    sed -i "" "s#{WEBROOT}#$webroot#g" ./docker-compose.yml
-    sed -i "" "s#{NGINX_SRV_CONF}#$nginx_srv_conf#g" ./docker-compose.yml
-    sed -i "" "s#{NGINX_MAIN_CONF}#$nginx_main_conf#g" ./docker-compose.yml
-    sed -i "" "s#{MYSQL_DATA}#$mysql_data#g" ./docker-compose.yml
+    sed -i  "s#{WEBROOT}#$webroot#g" ./docker-compose.yml
+    sed -i  "s#{NGINX_SRV_CONF}#$nginx_srv_conf#g" ./docker-compose.yml
+    sed -i  "s#{NGINX_MAIN_CONF}#$nginx_main_conf#g" ./docker-compose.yml
+    sed -i  "s#{MYSQL_DATA}#$mysql_data#g" ./docker-compose.yml
 
 }
 

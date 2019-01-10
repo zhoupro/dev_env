@@ -6,7 +6,7 @@ services:
       - ALL
     security_opt:
       - seccomp:unconfined
-    image: lnmp 
+    image: prozhou-php
     entrypoint: bash -c "/data/server/php/sbin/php-fpm && tail -f /etc/passwd"
     ports:
       - "9010:9010"
@@ -24,7 +24,7 @@ services:
       PATH: /data/server/php/bin:$PATH
   'nginx':
     restart: always
-    image: lnmp 
+    image: prozhou-nginx
     entrypoint: bash -c "/data/server/nginx/sbin/nginx && tail -f /etc/passwd"
     depends_on:
       - "php"
@@ -38,7 +38,8 @@ services:
       - ./opt:/data/opt
   'mysql':
     restart: always
-    image: mysql:8.0.12
+    image: prozhou-mysql
+    entrypoint: bash -c "tail -f /etc/passwd"
     volumes:
         - {MYSQL_DATA}:/var/lib/mysql 
     ports:
@@ -50,7 +51,7 @@ services:
 
   'redis':
     restart: always
-    image: lnmp
+    image: prozhou-redis
     entrypoint: bash -c "tail -f /etc/passwd"
     cap_add:
       - ALL
@@ -62,3 +63,13 @@ services:
       - {NGINX_MAIN_CONF}:/data/server/nginx/conf/nginx.conf
       - ./data/soft_etc/ssh:/root/.ssh
       - ./opt:/data/opt
+  'go':
+    restart: always
+    image: prozhou-go
+    entrypoint: bash -c "tail -f /etc/passwd"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - {WEBROOT}:/data/www/wwwroot
