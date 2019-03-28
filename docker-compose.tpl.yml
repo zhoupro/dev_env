@@ -84,7 +84,7 @@ services:
       PATH: /root/go/bin:$PATH
   'c':
     restart: always
-    image: prozhou/c
+    image: prozhou/cc
     entrypoint: bash -c "tail -f /etc/passwd"
     cap_add:
       - ALL
