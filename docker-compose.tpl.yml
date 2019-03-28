@@ -6,12 +6,10 @@ services:
       - ALL
     security_opt:
       - seccomp:unconfined
-    image: prozhou-php
+    image: prozhou/php
     entrypoint: bash -c "/data/server/php/sbin/php-fpm && tail -f /etc/passwd"
     ports:
       - "9010:9010"
-      - "3999:3999"
-      - "9999:9999"
     depends_on:
       - "mysql"
     volumes:
@@ -24,8 +22,12 @@ services:
       PATH: /data/server/php/bin:$PATH
   'nginx':
     restart: always
-    image: prozhou-nginx
+    image: prozhou/nginx
     entrypoint: bash -c "/data/server/nginx/sbin/nginx && tail -f /etc/passwd"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
     depends_on:
       - "php"
     ports:
@@ -38,8 +40,12 @@ services:
       - ./opt:/data/opt
   'mysql':
     restart: always
-    image: prozhou-mysql
+    image: prozhou/mysql
     entrypoint: bash -c "tail -f /etc/passwd"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
     volumes:
         - {MYSQL_DATA}:/var/lib/mysql 
     ports:
@@ -48,10 +54,9 @@ services:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: example
 
-
   'redis':
     restart: always
-    image: prozhou-redis
+    image: prozhou/redis
     entrypoint: bash -c "tail -f /etc/passwd"
     cap_add:
       - ALL
@@ -65,7 +70,31 @@ services:
       - ./opt:/data/opt
   'go':
     restart: always
-    image: prozhou-go
+    image: prozhou/go
+    entrypoint: bash -c "tour -http 0.0.0.0:3999"
+    ports:
+      - "3999:3999"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - {WEBROOT}:/data/www/wwwroot
+    environment:
+      PATH: /root/go/bin:$PATH
+  'c':
+    restart: always
+    image: prozhou/c
+    entrypoint: bash -c "tail -f /etc/passwd"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - {WEBROOT}:/data/www/wwwroot
+  'java':
+    restart: always
+    image: prozhou/java
     entrypoint: bash -c "tail -f /etc/passwd"
     cap_add:
       - ALL
