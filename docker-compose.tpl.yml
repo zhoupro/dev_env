@@ -82,7 +82,7 @@ services:
       - {WEBROOT}:/data/www/wwwroot
     environment:
       PATH: /root/go/bin:$PATH
-  'c':
+  'cc':
     restart: always
     image: prozhou/cc
     entrypoint: bash -c "tail -f /etc/passwd"
