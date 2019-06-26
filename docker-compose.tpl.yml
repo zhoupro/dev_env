@@ -71,7 +71,7 @@ services:
   'go':
     restart: always
     image: prozhou/go
-    entrypoint: bash -c "tour -http 0.0.0.0:3999"
+    entrypoint: bash -c "tail -f /etc/passwd"
     ports:
       - "3999:3999"
     cap_add:
@@ -79,7 +79,7 @@ services:
     security_opt:
       - seccomp:unconfined
     volumes:
-      - {WEBROOT}:/data/www/wwwroot
+      - {WEBROOT}/go:/root/go
     environment:
       PATH: /root/go/bin:$PATH
   'cc':

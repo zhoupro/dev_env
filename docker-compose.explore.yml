@@ -1,0 +1,64 @@
+version: "3"
+services:
+  'php':
+    restart: always
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    image: prozhou/php
+    entrypoint: bash -c "/data/server/php/sbin/php-fpm && tail -f /etc/passwd"
+    ports:
+      - "9010:9010"
+    volumes:
+      - ./soft/laravel:/data/www/wwwroot
+      - ./data/soft_etc/common/nginx/vhost/server.conf:/data/server/nginx/conf/vhost/server.conf
+      - ./data/soft_etc/common/nginx/nginx.conf:/data/server/nginx/conf/nginx.conf
+      - ./data/soft_etc/ssh:/root/.ssh
+      - ./opt:/data/opt
+    environment:
+      PATH: /data/server/php/bin:$PATH
+  'go':
+    restart: always
+    image: prozhou/go
+    entrypoint: bash -c "tail -f /etc/passwd"
+    ports:
+      - "3999:3999"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - ./soft/laravel/go:/root/go
+    environment:
+      PATH: /root/go/bin:$PATH
+  'cc':
+    restart: always
+    image: prozhou/cc
+    entrypoint: bash -c "tail -f /etc/passwd"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - ./soft/laravel:/data/www/wwwroot
+  'java':
+    restart: always
+    image: prozhou/java
+    entrypoint: bash -c "tail -f /etc/passwd"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - ./soft/laravel:/data/www/wwwroot
+  'bash':
+    restart: always
+    image: prozhou/bash
+    entrypoint: bash -c "tail -f /etc/passwd"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - ./soft/laravel:/data/www/wwwroot

@@ -5,6 +5,7 @@
 # load.sh stop  laravel
 # load.sh exec  php
 function config() {
+
     mkdir -p ./data/soft_etc/$1
     mkdir -p ./soft/$1
     mkdir -p ./data/soft_data/$1
