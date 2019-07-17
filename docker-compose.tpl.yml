@@ -8,10 +8,9 @@ services:
       - seccomp:unconfined
     image: prozhou/php
     entrypoint: bash -c "/data/server/php/sbin/php-fpm && tail -f /etc/passwd"
-    ports:
-      - "9010:9010"
     depends_on:
       - "mysql"
+      - "redis"
     volumes:
       - {WEBROOT}:/data/www/wwwroot
       - {NGINX_SRV_CONF}:/data/server/nginx/conf/vhost/server.conf
@@ -20,6 +19,33 @@ services:
       - ./opt:/data/opt
     environment:
       PATH: /data/server/php/bin:$PATH
+  'go':
+    restart: always
+    image: prozhou/go
+    entrypoint: bash -c "tail -f /etc/passwd"
+    depends_on:
+      - "mysql"
+      - "redis"
+    ports:
+      - "3999:3999"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - {WEBROOT}/go:/root/go
+    environment:
+      PATH: /root/go/bin:$PATH
+  'java':
+    restart: always
+    image: prozhou/java
+    entrypoint: bash -c "tail -f /etc/passwd"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - {WEBROOT}:/data/www/wwwroot
   'nginx':
     restart: always
     image: prozhou/nginx
@@ -41,23 +67,21 @@ services:
   'mysql':
     restart: always
     image: prozhou/mysql
-    entrypoint: bash -c "tail -f /etc/passwd"
+    entrypoint: bash -c "if [ -d /usr/local/mysql/data/sys ];then /usr/local/mysql/bin/mysqld --initialize-insecure --user=root;fi;/usr/local/mysql/bin/mysqld  --user=root;tail -f /etc/passwd"
     cap_add:
       - ALL
     security_opt:
       - seccomp:unconfined
     volumes:
-        - {MYSQL_DATA}:/var/lib/mysql 
+        - {MYSQL_DATA}:/usr/local/mysql/data
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: example
-
   'redis':
     restart: always
     image: prozhou/redis
-    entrypoint: bash -c "tail -f /etc/passwd"
+    entrypoint: bash -c "/data/server/redis/bin/redis-server;tail -f /etc/passwd"
+    ports:
+      - "6397:6397"
     cap_add:
       - ALL
     security_opt:
@@ -68,33 +92,9 @@ services:
       - {NGINX_MAIN_CONF}:/data/server/nginx/conf/nginx.conf
       - ./data/soft_etc/ssh:/root/.ssh
       - ./opt:/data/opt
-  'go':
+  'cpp':
     restart: always
-    image: prozhou/go
-    entrypoint: bash -c "tail -f /etc/passwd"
-    ports:
-      - "3999:3999"
-    cap_add:
-      - ALL
-    security_opt:
-      - seccomp:unconfined
-    volumes:
-      - {WEBROOT}/go:/root/go
-    environment:
-      PATH: /root/go/bin:$PATH
-  'cc':
-    restart: always
-    image: prozhou/cc
-    entrypoint: bash -c "tail -f /etc/passwd"
-    cap_add:
-      - ALL
-    security_opt:
-      - seccomp:unconfined
-    volumes:
-      - {WEBROOT}:/data/www/wwwroot
-  'java':
-    restart: always
-    image: prozhou/java
+    image: prozhou/cpp
     entrypoint: bash -c "tail -f /etc/passwd"
     cap_add:
       - ALL
