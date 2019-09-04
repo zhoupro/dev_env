@@ -62,7 +62,7 @@ services:
   'mysql':
     restart: always
     image: prozhou/mysql
-    entrypoint: bash -c "if [ -d /usr/local/mysql/data/sys ];then /usr/local/mysql/bin/mysqld --initialize-insecure --user=root;fi;/usr/local/mysql/bin/mysqld  --user=root;tail -f /etc/passwd"
+    entrypoint: bash -c "if [ ! -d /usr/local/mysql/data/sys ];then rm -rf /usr/local/mysql/data/* && /usr/local/mysql/bin/mysqld --initialize-insecure --user=root;fi;/usr/local/mysql/bin/mysqld  --user=root;tail -f /etc/passwd"
     cap_add:
       - ALL
     security_opt:
