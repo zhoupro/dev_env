@@ -12,11 +12,7 @@ services:
       - "mysql"
       - "redis"
     volumes:
-      - {WEBROOT}:/data/www/wwwroot
-      - {NGINX_SRV_CONF}:/data/server/nginx/conf/vhost/server.conf
-      - {NGINX_MAIN_CONF}:/data/server/nginx/conf/nginx.conf
-      - ./data/soft_etc/ssh:/root/.ssh
-      - ./opt:/data/opt
+      - {WEBROOT}/wwwroot:/data/www/wwwroot
     environment:
       PATH: /data/server/php/bin:$PATH
   'go':
@@ -36,6 +32,7 @@ services:
       - {WEBROOT}/go:/root/go
     environment:
       PATH: /root/go/bin:$PATH
+      GOPATH: /root/go
   'java':
     restart: always
     image: prozhou/java
@@ -45,7 +42,7 @@ services:
     security_opt:
       - seccomp:unconfined
     volumes:
-      - {WEBROOT}:/data/www/wwwroot
+      - {WEBROOT}/wwwroot:/data/www/wwwroot
   'nginx':
     restart: always
     image: prozhou/nginx
@@ -59,11 +56,9 @@ services:
     ports:
       - "80:80"
     volumes:
-      - {WEBROOT}:/data/www/wwwroot
+      - {WEBROOT}/wwwroot:/data/www/wwwroot
       - {NGINX_SRV_CONF}:/data/server/nginx/conf/vhost/server.conf
       - {NGINX_MAIN_CONF}:/data/server/nginx/conf/nginx.conf
-      - ./data/soft_etc/ssh:/root/.ssh
-      - ./opt:/data/opt
   'mysql':
     restart: always
     image: prozhou/mysql
@@ -86,12 +81,6 @@ services:
       - ALL
     security_opt:
       - seccomp:unconfined
-    volumes:
-      - {WEBROOT}:/data/www/wwwroot
-      - {NGINX_SRV_CONF}:/data/server/nginx/conf/vhost/server.conf
-      - {NGINX_MAIN_CONF}:/data/server/nginx/conf/nginx.conf
-      - ./data/soft_etc/ssh:/root/.ssh
-      - ./opt:/data/opt
   'cpp':
     restart: always
     image: prozhou/cpp
@@ -101,4 +90,4 @@ services:
     security_opt:
       - seccomp:unconfined
     volumes:
-      - {WEBROOT}:/data/www/wwwroot
+      - {WEBROOT}/wwwroot:/data/www/wwwroot
