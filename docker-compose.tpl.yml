@@ -91,3 +91,13 @@ services:
       - seccomp:unconfined
     volumes:
       - {WEBROOT}/wwwroot:/data/www/wwwroot
+   'python':
+    restart: always
+    image: prozhou/python
+    entrypoint: bash -c "tail -f /etc/passwd"
+    cap_add:
+      - ALL
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - {WEBROOT}/wwwroot:/data/www/wwwroot
