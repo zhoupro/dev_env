@@ -7,7 +7,11 @@ services:
     security_opt:
       - seccomp:unconfined
     image: prozhou/php
-    entrypoint: bash -c "/data/server/php/sbin/php-fpm && tail -f /etc/passwd"
+    entrypoint:
+      - /bin/bash
+      - -c
+      - ip -4 route list match 0/0 | awk '{print $$3" host.docker.internal"}' >> /etc/hosts && /data/server/php/sbin/php-fpm && tail -f /etc/passwd
+    
     depends_on:
       - "mysql"
       - "redis"
@@ -18,7 +22,10 @@ services:
   'go':
     restart: always
     image: prozhou/go
-    entrypoint: bash -c "tail -f /etc/passwd"
+    entrypoint:
+      - /bin/bash
+      - -c
+      - ip -4 route list match 0/0 | awk '{print $$3" host.docker.internal"}' >> /etc/hosts && tail -f /etc/passwd
     depends_on:
       - "mysql"
       - "redis"
@@ -36,7 +43,10 @@ services:
   'java':
     restart: always
     image: prozhou/java
-    entrypoint: bash -c "tail -f /etc/passwd"
+    entrypoint:
+      - /bin/bash
+      - -c
+      - ip -4 route list match 0/0 | awk '{print $$3" host.docker.internal"}' >> /etc/hosts && tail -f /etc/passwd
     cap_add:
       - ALL
     security_opt:
@@ -46,7 +56,10 @@ services:
   'nginx':
     restart: always
     image: prozhou/nginx
-    entrypoint: bash -c "/data/server/nginx/sbin/nginx && tail -f /etc/passwd"
+    entrypoint:
+      - /bin/bash
+      - -c
+      - ip -4 route list match 0/0 | awk '{print $$3" host.docker.internal"}' >> /etc/hosts && /data/server/nginx/sbin/nginx && tail -f /etc/passwd
     cap_add:
       - ALL
     security_opt:
@@ -62,7 +75,11 @@ services:
   'mysql':
     restart: always
     image: prozhou/mysql
-    entrypoint: bash -c "if [ ! -d /usr/local/mysql/data/sys ];then rm -rf /usr/local/mysql/data/* && /usr/local/mysql/bin/mysqld --initialize-insecure --user=root;fi;/usr/local/mysql/bin/mysqld  --user=root;tail -f /etc/passwd"
+    entrypoint:
+      - /bin/bash
+      - -c
+      - ip -4 route list match 0/0 | awk '{print $$3" host.docker.internal"}' >> /etc/hosts && if [ ! -d /usr/local/mysql/data/sys ];then rm -rf /usr/local/mysql/data/* && /usr/local/mysql/bin/mysqld --initialize-insecure --user=root;fi;/usr/local/mysql/bin/mysqld  --user=root;tail -f /etc/passwd
+        
     cap_add:
       - ALL
     security_opt:
@@ -74,7 +91,10 @@ services:
   'redis':
     restart: always
     image: prozhou/redis
-    entrypoint: bash -c "/data/server/redis/bin/redis-server;tail -f /etc/passwd"
+    entrypoint:
+      - /bin/bash
+      - -c
+      - ip -4 route list match 0/0 | awk '{print $$3" host.docker.internal"}' >> /etc/hosts && /data/server/redis/bin/redis-server;tail -f /etc/passwd
     ports:
       - "6397:6397"
     cap_add:
@@ -84,17 +104,23 @@ services:
   'cpp':
     restart: always
     image: prozhou/cpp
-    entrypoint: bash -c "tail -f /etc/passwd"
+    entrypoint:
+      - /bin/bash
+      - -c
+      - ip -4 route list match 0/0 | awk '{print $$3" host.docker.internal"}' >> /etc/hosts && tail -f /etc/passwd
     cap_add:
       - ALL
     security_opt:
       - seccomp:unconfined
     volumes:
       - {WEBROOT}/wwwroot:/data/www/wwwroot
-   'python':
+  'python':
     restart: always
     image: prozhou/python
-    entrypoint: bash -c "tail -f /etc/passwd"
+    entrypoint:
+      - /bin/bash
+      - -c
+      - ip -4 route list match 0/0 | awk '{print $$3" host.docker.internal"}' >> /etc/hosts && tail -f /etc/passwd
     cap_add:
       - ALL
     security_opt:
